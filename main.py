@@ -84,7 +84,7 @@ def main():
     ax.set_ylim(ymin=-40)
     plt.legend(loc=4)
     plt.show()
-    plt.savefig('plot.png')
+    # plt.savefig('plot.png')
 
 
 main()
