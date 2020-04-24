@@ -32,13 +32,9 @@ def ejeporcentuales(suma):
     return porcentuales
 
 
-def main():
-    datos1 = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")
-    datos2 = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")
-    precio_gal_usd_af = datos1['Último']
-    precio_gal_arg_af = datos2['Último']
-
-    precio_gal_lista_af = convertir_valores(precio_gal_usd_af, precio_gal_arg_af)
+def procesa_datos(precio_gal_usd_af, precio_gal_arg_af):
+    precio_gal_lista_af = convertir_valores(
+        precio_gal_usd_af, precio_gal_arg_af)
 
     # lo di vuelta, ya que las fechas venian desde hoy hasta el pasado
     ccl_af = list(reversed(precio_gal_lista_af))
@@ -51,11 +47,23 @@ def main():
     suma = aumentoporcentuales(ccl_af_aumento)
     porcentuales_af = ejeporcentuales(suma)
 
-    # macri
+    return ccl_af_aumento, porcentuales_af
+
+
+def main():
+    datos1 = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")
+    datos2 = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")
     datos3 = pd.read_csv('GGAL_ARG_MACRI_SEMANAL.csv', delimiter=',')
     datos4 = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')
+    precio_gal_usd_af = datos1['Último']
+    precio_gal_arg_af = datos2['Último']
     precio_gal_arg_mm = datos3['Último']
     precio_gal_usd_mm = datos4['Último']
+
+    ccl_af_aumento, porcentuales_af = procesa_datos(precio_gal_usd_af, precio_gal_arg_af)
+
+
+    # macri
 
     precio_gal_lista_mm = convertir_valores(precio_gal_arg_mm, precio_gal_usd_mm)
 
@@ -69,6 +77,7 @@ def main():
 
     suma1 = aumentoporcentuales(ccl_mm_aumento)
     porcentuales_mm = ejeporcentuales(suma1)
+
 
     plt.style.use('seaborn')
     ax = plt.subplot()
