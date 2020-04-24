@@ -32,22 +32,22 @@ def ejeporcentuales(suma):
     return porcentuales
 
 
-def procesa_datos(precio_gal_usd_af, precio_gal_arg_af):
-    precio_gal_lista_af = convertir_valores(
-        precio_gal_usd_af, precio_gal_arg_af)
+def procesa_datos(precio_gal_usd, precio_gal_arg):
+    precio_gal_lista = convertir_valores(
+        precio_gal_usd, precio_gal_arg)
 
     # lo di vuelta, ya que las fechas venian desde hoy hasta el pasado
-    ccl_af = list(reversed(precio_gal_lista_af))
+    ccl = list(reversed(precio_gal_lista))
     # lista dos para calcular el aumento con respecto a la semana anterior
-    ccl_af_1 = ccl_af[1:]
+    ccl_1 = ccl[1:]
     # aumento con respecto a la semana anterior
-    ccl_af_aumento = [ccl_af_1[i]/ccl_af[i] for i in range(len(ccl_af_1))]
-    ccl_af_aumento.insert(0, 1.00)  # agrego la base 1 a la primer semana
+    ccl_aumento = [ccl_1[i]/ccl[i] for i in range(len(ccl_1))]
+    ccl_aumento.insert(0, 1.00)  # agrego la base 1 a la primer semana
 
-    suma = aumentoporcentuales(ccl_af_aumento)
-    porcentuales_af = ejeporcentuales(suma)
+    suma = aumentoporcentuales(ccl_aumento)
+    porcentuales = ejeporcentuales(suma)
 
-    return ccl_af_aumento, porcentuales_af
+    return ccl_aumento, porcentuales
 
 
 def main():
@@ -57,27 +57,11 @@ def main():
     datos4 = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')
     precio_gal_usd_af = datos1['Último']
     precio_gal_arg_af = datos2['Último']
-    precio_gal_arg_mm = datos3['Último']
-    precio_gal_usd_mm = datos4['Último']
+    precio_gal_usd_mm = datos3['Último']
+    precio_gal_arg_mm = datos4['Último']
 
     ccl_af_aumento, porcentuales_af = procesa_datos(precio_gal_usd_af, precio_gal_arg_af)
-
-
-    # macri
-
-    precio_gal_lista_mm = convertir_valores(precio_gal_arg_mm, precio_gal_usd_mm)
-
-    # lo di vuelta, ya que las fechas venian desde hoy hasta el pasado
-    ccl_mm = list(reversed(precio_gal_lista_mm))
-    # lista dos para calcular el aumento con respecto a la semana anterior
-    ccl_mm_1 = ccl_mm[1:]
-    # aumento con respecto a la semana anterior
-    ccl_mm_aumento = [ccl_mm_1[i]/ccl_mm[i] for i in range(len(ccl_mm_1))]
-    ccl_mm_aumento.insert(0, 1.00)  # agrego la base 1 a la primer semana
-
-    suma1 = aumentoporcentuales(ccl_mm_aumento)
-    porcentuales_mm = ejeporcentuales(suma1)
-
+    ccl_mm_aumento, porcentuales_mm = procesa_datos(precio_gal_usd_mm, precio_gal_arg_mm)
 
     plt.style.use('seaborn')
     ax = plt.subplot()
@@ -86,12 +70,11 @@ def main():
         200.54522782399653)  # numero de semanas de gobierno
     y_ubicacion = 200.54522782399653
     ax.annotate('JULIO-2019', xy=(x_ubicacion, y_ubicacion),
-                xytext=(x_ubicacion-5, y_ubicacion-30), arrowprops=dict(arrowstyle="->"))
+                xytext=(x_ubicacion-5, y_ubicacion-40), arrowprops=dict(arrowstyle="->"))
 
     x_ubicacion2 = porcentuales_mm.index(
         16.76768621523337)  # numero de semanas de gobierno
     y_ubicacion2 = 16.76768621523337
-
     ax.annotate('DIC-2017', xy=(x_ubicacion2, y_ubicacion2),
                 xytext=(x_ubicacion2-5, y_ubicacion2-40), arrowprops=dict(arrowstyle="->"))
 
