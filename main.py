@@ -3,12 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 csfont = {'fontname': 'Times New Roman'}
 
-datos1 = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")
-datos2 = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")
-precio_gal_usd_af = datos1['Último']
-precio_gal_arg_af = datos2['Último']
-precio_gal_lista_af = []
-
 
 def convertir_valores(preciosusd, preciosarg, listanueva):
     for a, b in zip(preciosusd, preciosarg):
@@ -16,6 +10,24 @@ def convertir_valores(preciosusd, preciosarg, listanueva):
         second = float(b.replace(',', ''))
         listanueva.append(one/second)
 
+
+def aumentoporcentuales(aumento_ccl, suma):
+    sum = 1
+    for a in range(len(aumento_ccl)):
+        sum *= aumento_ccl[a]
+        suma.append(sum)
+
+
+def ejeporcentuales(porcentuales, suma):
+    for b in suma:  # para tener en el eje Y los porcentuales
+        porcentuales.append((b - 1.00) * 100)
+
+
+datos1 = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")
+datos2 = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")
+precio_gal_usd_af = datos1['Último']
+precio_gal_arg_af = datos2['Último']
+precio_gal_lista_af = []
 
 convertir_valores(precio_gal_usd_af, precio_gal_arg_af, precio_gal_lista_af)
 
@@ -29,23 +41,9 @@ ccl_af_aumento.insert(0, 1.00)  # agrego la base 1 a la primer semana
 
 suma = []
 
-
-def aumentoporcentuales(aumento_ccl, suma):
-    sum = 1
-    for a in range(len(aumento_ccl)):
-        sum *= aumento_ccl[a]
-        suma.append(sum)
-
-
 aumentoporcentuales(ccl_af_aumento, suma)
 
 porcentuales_af = []
-
-
-def ejeporcentuales(porcentuales, suma):
-    for b in suma:  # para tener en el eje Y los porcentuales
-        porcentuales.append((b - 1.00) * 100)
-
 
 ejeporcentuales(porcentuales_af, suma)
 
