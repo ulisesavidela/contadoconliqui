@@ -56,14 +56,10 @@ def agrega_anotacion(ax, porcentuales, num_sem, texto):
                 xytext=(x_ubicacion-5, y_ubicacion-40), arrowprops=dict(arrowstyle="->"))
 
 def main():
-    datos1 = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")
-    datos2 = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")
-    datos3 = pd.read_csv('GGAL_ARG_MACRI_SEMANAL.csv', delimiter=',')
-    datos4 = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')
-    precio_gal_usd_af = datos1['Último']
-    precio_gal_arg_af = datos2['Último']
-    precio_gal_usd_mm = datos3['Último']
-    precio_gal_arg_mm = datos4['Último']
+    precio_gal_usd_af = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")['Último']
+    precio_gal_arg_af = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")['Último']
+    precio_gal_usd_mm = pd.read_csv('GGAL_ARG_MACRI_SEMANAL.csv', delimiter=',')['Último']
+    precio_gal_arg_mm = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')['Último']
 
     ccl_af_aumento, porcentuales_af = procesa_datos(precio_gal_usd_af, precio_gal_arg_af)
     ccl_mm_aumento, porcentuales_mm = procesa_datos(precio_gal_usd_mm, precio_gal_arg_mm)
@@ -88,7 +84,7 @@ def main():
     ax.set_ylim(ymin=-40)
     plt.legend(loc=4)
     plt.show()
-    # plt.savefig('plot.png')
+    plt.savefig('plot.png')
 
 
 main()
