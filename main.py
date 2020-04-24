@@ -6,7 +6,7 @@ csfont = {'fontname': 'Times New Roman'}
 
 def convertir_valores(preciosusd, preciosarg):
     listanueva = []
-    for a, b in zip(preciosusd, preciosarg):
+    for a, b in zip(preciosarg, preciosusd):
         one = float(a.replace(',', ''))
         second = float(b.replace(',', ''))
         listanueva.append(one/second)
@@ -56,10 +56,10 @@ def agrega_anotacion(ax, porcentuales, num_sem, texto):
                 xytext=(x_ubicacion-5, y_ubicacion-40), arrowprops=dict(arrowstyle="->"))
 
 def main():
-    precio_gal_usd_af = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")['Último']
-    precio_gal_arg_af = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")['Último']
-    precio_gal_usd_mm = pd.read_csv('GGAL_ARG_MACRI_SEMANAL.csv', delimiter=',')['Último']
-    precio_gal_arg_mm = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')['Último']
+    precio_gal_arg_af = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")['Último']
+    precio_gal_usd_af = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")['Último']
+    precio_gal_arg_mm = pd.read_csv('GGAL_ARG_MACRI_SEMANAL.csv', delimiter=',')['Último']
+    precio_gal_usd_mm = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')['Último']
 
     ccl_af_aumento, porcentuales_af = procesa_datos(precio_gal_usd_af, precio_gal_arg_af)
     ccl_mm_aumento, porcentuales_mm = procesa_datos(precio_gal_usd_mm, precio_gal_arg_mm)
