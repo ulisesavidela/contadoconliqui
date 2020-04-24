@@ -49,11 +49,13 @@ def procesa_datos(precio_gal_usd, precio_gal_arg):
 
     return ccl_aumento, porcentuales
 
+
 def agrega_anotacion(ax, porcentuales, num_sem, texto):
     x_ubicacion = porcentuales.index(num_sem)  # numero de semanas de gobierno
     y_ubicacion = num_sem
     ax.annotate(texto, xy=(x_ubicacion, y_ubicacion),
                 xytext=(x_ubicacion-5, y_ubicacion-40), arrowprops=dict(arrowstyle="->"))
+
 
 def main():
     precio_gal_arg_af = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")['Último']
