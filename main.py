@@ -4,23 +4,32 @@ import numpy as np
 csfont = {'fontname': 'Times New Roman'}
 
 
-def convertir_valores(preciosusd, preciosarg, listanueva):
+def convertir_valores(preciosusd, preciosarg):
+    listanueva = []
     for a, b in zip(preciosusd, preciosarg):
         one = float(a.replace(',', ''))
         second = float(b.replace(',', ''))
         listanueva.append(one/second)
 
+    return listanueva
 
-def aumentoporcentuales(aumento_ccl, suma):
+
+def aumentoporcentuales(aumento_ccl):
+    suma = []
     sum = 1
     for a in range(len(aumento_ccl)):
         sum *= aumento_ccl[a]
         suma.append(sum)
 
+    return suma
 
-def ejeporcentuales(porcentuales, suma):
+
+def ejeporcentuales(suma):
+    porcentuales = []
     for b in suma:  # para tener en el eje Y los porcentuales
         porcentuales.append((b - 1.00) * 100)
+
+    return porcentuales
 
 
 def main():
@@ -28,9 +37,8 @@ def main():
     datos2 = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")
     precio_gal_usd_af = datos1['Último']
     precio_gal_arg_af = datos2['Último']
-    precio_gal_lista_af = []
 
-    convertir_valores(precio_gal_usd_af, precio_gal_arg_af, precio_gal_lista_af)
+    precio_gal_lista_af = convertir_valores(precio_gal_usd_af, precio_gal_arg_af)
 
     # lo di vuelta, ya que las fechas venian desde hoy hasta el pasado
     ccl_af = list(reversed(precio_gal_lista_af))
@@ -40,23 +48,16 @@ def main():
     ccl_af_aumento = [ccl_af_1[i]/ccl_af[i] for i in range(len(ccl_af_1))]
     ccl_af_aumento.insert(0, 1.00)  # agrego la base 1 a la primer semana
 
-    suma = []
-
-    aumentoporcentuales(ccl_af_aumento, suma)
-
-    porcentuales_af = []
-
-    ejeporcentuales(porcentuales_af, suma)
+    suma = aumentoporcentuales(ccl_af_aumento)
+    porcentuales_af = ejeporcentuales(suma)
 
     # macri
     datos3 = pd.read_csv('GGAL_ARG_MACRI_SEMANAL.csv', delimiter=',')
     datos4 = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')
     precio_gal_arg_mm = datos3['Último']
     precio_gal_usd_mm = datos4['Último']
-    fechas_mm = datos4['Fecha']
 
-    precio_gal_lista_mm = []
-    convertir_valores(precio_gal_arg_mm, precio_gal_usd_mm, precio_gal_lista_mm)
+    precio_gal_lista_mm = convertir_valores(precio_gal_arg_mm, precio_gal_usd_mm)
 
     # lo di vuelta, ya que las fechas venian desde hoy hasta el pasado
     ccl_mm = list(reversed(precio_gal_lista_mm))
@@ -66,12 +67,8 @@ def main():
     ccl_mm_aumento = [ccl_mm_1[i]/ccl_mm[i] for i in range(len(ccl_mm_1))]
     ccl_mm_aumento.insert(0, 1.00)  # agrego la base 1 a la primer semana
 
-    suma1 = []
-
-    aumentoporcentuales(ccl_mm_aumento, suma1)
-    porcentuales_mm = []
-
-    ejeporcentuales(porcentuales_mm, suma1)
+    suma1 = aumentoporcentuales(ccl_mm_aumento)
+    porcentuales_mm = ejeporcentuales(suma1)
 
     plt.style.use('seaborn')
     ax = plt.subplot()
@@ -108,5 +105,6 @@ def main():
     plt.legend(loc=4)
     plt.show()
     # plt.savefig('plot.png')
+
 
 main()
