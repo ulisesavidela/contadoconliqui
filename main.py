@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 csfont = {'fontname': 'Times New Roman'}
 
-datos1 = pd.read_csv('GAL ARG AF ACTUAL.csv', delimiter=",")
-datos2 = pd.read_csv('GAL USA AB ACTUAL.csv', delimiter=",")
+datos1 = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")
+datos2 = pd.read_csv('GGAL_USD_AF_SEMANAL.csv', delimiter=",")
 precio_gal_usd_af = datos1['Último']
 precio_gal_arg_af = datos2['Último']
 precio_gal_lista_af = []
@@ -50,8 +50,8 @@ def ejeporcentuales(porcentuales, suma):
 ejeporcentuales(porcentuales_af, suma)
 
 # macri
-datos3 = pd.read_csv('GGAL ARG MACRI SEMANAL .csv', delimiter=',')
-datos4 = pd.read_csv('GGAL USD MACRI SEMANAL.csv', delimiter=',')
+datos3 = pd.read_csv('GGAL_ARG_MACRI_SEMANAL.csv', delimiter=',')
+datos4 = pd.read_csv('GGAL_USD_MACRI_SEMANAL.csv', delimiter=',')
 precio_gal_arg_mm = datos3['Último']
 precio_gal_usd_mm = datos4['Último']
 fechas_mm = datos4['Fecha']
@@ -108,3 +108,4 @@ ax.margins(x=0)
 ax.set_ylim(ymin=-40)
 plt.legend(loc=4)
 plt.show()
+# plt.savefig('plot.png')
