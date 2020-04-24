@@ -49,6 +49,11 @@ def procesa_datos(precio_gal_usd, precio_gal_arg):
 
     return ccl_aumento, porcentuales
 
+def agrega_anotacion(ax, porcentuales, num_sem, texto):
+    x_ubicacion = porcentuales.index(num_sem)  # numero de semanas de gobierno
+    y_ubicacion = num_sem
+    ax.annotate(texto, xy=(x_ubicacion, y_ubicacion),
+                xytext=(x_ubicacion-5, y_ubicacion-40), arrowprops=dict(arrowstyle="->"))
 
 def main():
     datos1 = pd.read_csv('GGAL_ARG_AF_SEMANAL.csv', delimiter=",")
@@ -66,22 +71,9 @@ def main():
     plt.style.use('seaborn')
     ax = plt.subplot()
 
-    x_ubicacion = porcentuales_mm.index(
-        200.54522782399653)  # numero de semanas de gobierno
-    y_ubicacion = 200.54522782399653
-    ax.annotate('JULIO-2019', xy=(x_ubicacion, y_ubicacion),
-                xytext=(x_ubicacion-5, y_ubicacion-40), arrowprops=dict(arrowstyle="->"))
-
-    x_ubicacion2 = porcentuales_mm.index(
-        16.76768621523337)  # numero de semanas de gobierno
-    y_ubicacion2 = 16.76768621523337
-    ax.annotate('DIC-2017', xy=(x_ubicacion2, y_ubicacion2),
-                xytext=(x_ubicacion2-5, y_ubicacion2-40), arrowprops=dict(arrowstyle="->"))
-
-    x_ubicacion3 = porcentuales_mm.index(352.3990789015343)
-    y_ubicacion3 = 352.3990789015343
-    ax.annotate('SEPT-2017', xy=(x_ubicacion3, y_ubicacion3),
-                xytext=(x_ubicacion3-5, y_ubicacion3-40), arrowprops=dict(arrowstyle="->"))
+    agrega_anotacion(ax, porcentuales_mm, 200.54522782399653, 'JULIO-2019')
+    agrega_anotacion(ax, porcentuales_mm, 16.76768621523337, 'DIC-2017')
+    agrega_anotacion(ax, porcentuales_mm, 352.3990789015343, 'SEPT-2017')
 
     plt.rcParams["font.family"] = "Times New Roman"
     ax.plot(range(len(ccl_af_aumento)), porcentuales_af,
